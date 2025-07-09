@@ -88,39 +88,60 @@ nav.navigation {
     color: yellowgreen;
 }
 
-/* Temporary */
-.submenu {
-    display: none;
+/* Temporary for Side Panel*/
+.sidepanel {
+    width: 0;
     position: fixed;
-    top: 180px;
-    left: 180px;
-    width: 120px;
-    height: 120px;
-    background-color: #444444;
+    z-index: 101;
+    height: 160px;
+    top: 140px; /* adjust to align with sidebar "Levels" */
+    left: 180px; /* right next to sidebar */
+    background-color: rgb(48, 48, 48);
+    overflow-x: hidden;
+    transition: 0.3s;
     border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-    z-index: 100;
-    padding: 10px;
+    box-shadow: 2px 2px 8px rgba(139, 139, 139, 0.2);
+    padding: 20px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidepanel.open {
+    width: 140px;
+}
+
+.sidepanel .closebtn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 28px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.submenu-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 10px;
-    align-items: center;
-    justify-items: center;
+    margin-top: 20px;
 }
 
-.submenu button {
+.submenu-buttons button {
     width: 40px;
     height: 40px;
     background: #666;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 1em;
+    font-size: 1.2em;
     cursor: pointer;
-    transition: background 0.5s;
+    transition: background 0.2s;
 }
 
-.submenu button:hover {
+.submenu-buttons button:hover {
     background: yellowgreen;
 }
