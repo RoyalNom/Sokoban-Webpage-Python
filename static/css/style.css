@@ -13,7 +13,7 @@ header {
     padding: 20px 40px;
     background-color: rgb(94, 94, 94);
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     z-index: 99;
 }
@@ -94,8 +94,8 @@ nav.navigation {
     position: fixed;
     z-index: 101;
     height: 160px;
-    top: 140px; /* adjust to align with sidebar "Levels" */
-    left: 180px; /* right next to sidebar */
+    top: 140px;
+    left: 180px;
     background-color: rgb(48, 48, 48);
     overflow-x: hidden;
     transition: 0.3s;
@@ -144,4 +144,20 @@ nav.navigation {
 
 .submenu-buttons button:hover {
     background: yellowgreen;
+}
+
+/* Temporary for Wrapper Login Box*/
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-left: 180px;
+    padding-top: 80px;
+}
+
+.wrapper {
+    margin:0;
+    z-index: 1;
+    position: relative;
 }

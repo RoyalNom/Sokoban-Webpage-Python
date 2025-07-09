@@ -33,7 +33,25 @@
         </div>
     </div>
 
+    <div class="wrapper" id="loginWrapper" style="display: none;">
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form action="#">
+                <div class="input-box">
+                    <!-- span class="icon"></span-->
+                    <input type="text" required>
+                    <label>Username</label>
+                </div> 
+                <div class="input-box">
+                    <!--span class="icon"></span-->
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+        </div>
+    </div>
+       
     <script>
+    // Script for the level selection
     document.getElementById('openLevelsPanel').onclick = function(e) {
         e.preventDefault();
         document.getElementById('levelsPanel').classList.add('open');
@@ -41,7 +59,16 @@
     document.getElementById('closeLevelsPanel').onclick = function() {
         document.getElementById('levelsPanel').classList.remove('open');
     };
-    </script>
 
+    // Script for the login popup
+    document.querySelector('.login-popup').onclick = function() {
+        const loginWrapper = document.getElementById('loginWrapper');
+        if (loginWrapper.style.display === 'none' || loginWrapper.style.display === '') {
+            loginWrapper.style.display = 'flex';
+        } else {
+            loginWrapper.style.display = 'none';
+        }
+    };
+    </script>
 </body>
 </html>
