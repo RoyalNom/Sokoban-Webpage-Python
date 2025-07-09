@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sokoban Webpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- <img src="winton.png" style="width:100%"> -->
+    <header>
+        <h2 class ="logo">Sokoban</h2>
+        <nav class="navigation">
+            <a href="#">Explanation</a>
+            <a href="#">LeaderBoard</a>
+            <button class="login-popup">Login</button>
+        </nav>
+    </header>
+
+    <nav class="sidebar">
+        <a href="#">Levels</a>
+        <div class="submenu" id="levels-submenu">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+        </div>
+        <a href="#">Custom</a>
+    </nav>
+
+</body>
+</html>
