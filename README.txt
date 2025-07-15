@@ -6,8 +6,11 @@ sokoban webpage/
 │   └── profile.jpg
 └── README.md 
 
+How to run from scratch:
 1. install python first
 2. Install the Flask (the python flask is used to host the server):
 pip install flask
 3. run:
 python server.py
+
+Make sure that loaded iframes and so new templates have a layout which accomodates for the fact that it is an iframe
