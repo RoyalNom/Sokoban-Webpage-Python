@@ -16,3 +16,21 @@ python server.py
 Make sure that loaded iframes and so new templates have a layout which accomodates for the fact that it is an iframe
 
 pip install SQLAlchemy
+pip install flask-sqlalchemy
+pip install 
+
+To create a database in terminal:
+- python
+- from app(server) import db
+- db.create_all()
+- exit()
+(or just run the 
+python setup_db.py command)
+
+To check this open a new terminal and type:
+- cd instance
+- sqlite3 logindatabase.db
+- .tables
+- .exit
+
+ls and cd..
