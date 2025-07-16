@@ -14,3 +14,5 @@ pip install flask
 python server.py
 
 Make sure that loaded iframes and so new templates have a layout which accomodates for the fact that it is an iframe
+
+pip install SQLAlchemy
