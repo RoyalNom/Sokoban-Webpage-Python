@@ -7,14 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/stylelogin.css') }}">
 </head>
 <body>   
-    <h1>Login</h1>
-
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.username}}
-        {{ form.password }}
-        {{ form.submit }}
-    
-    <a href="{{ url_for('register') }}">Don't have an account? Register</a>
+    <h1>You are logged in</h1>
+    <a href="{{ url_for('logout') }}">Press here to logout</a>
 </body>
 </html>

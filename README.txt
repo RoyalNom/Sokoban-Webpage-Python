@@ -34,3 +34,9 @@ To check this open a new terminal and type:
 - .exit
 
 ls and cd..
+python add_user_test.py
+python remove_test.py
+
+for testing purposes
+username agha
+password haha
