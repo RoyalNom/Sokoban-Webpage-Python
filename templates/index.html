@@ -11,9 +11,15 @@
     <header>
         <h2 class ="logo">Sokoban</h2>
         <nav class="navigation">
+            {% if current_user.is_authenticated %}
+                <span class="welcome-msg">Welcome, {{ current_user.username }}!</span>
+            {% endif %}
             <a href="#">Explanation</a>
             <a href="#">LeaderBoard</a>
-            <button id="loginbtn" class="login-popup">Login</button>
+            <!-- button id="loginbtn" class="login-popup">Login</button -->
+             <button id="loginbtn" class="login-popup">
+                {{ 'Logout' if current_user.is_authenticated else 'Login' }}
+            </button>
         </nav>
     </header>
 
@@ -33,18 +39,28 @@
     </div>
 
     <!-- Make sure that the src has a layout corresponding to its status as an iframe page-->
-    <iframe src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+    <iframe src="{{ url_for('dashboard') if current_user.is_authenticated else '' }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
        
     <script>
     // Script for the login popup
     const iframe = document.getElementsByTagName('iframe')[0];
     const loginBtn = document.getElementById('loginbtn');
+    const isLoggedIn = {{ current_user.is_authenticated | lower }};
+    let loginPageVisible = false;
 
     loginBtn.onclick = function() {
-        if (iframe.src.includes('/login')) {
-            iframe.src = '';
+        if (isLoggedIn) {
+            window.top.location.href = '/logout';
         } else {
-            iframe.src = '/login';
+        // Not logged in → toggle login page in iframe
+        // Note this might not work perfectly, needs to be tested
+            if (!loginPageVisible) {
+                iframe.src = '/login';
+                loginPageVisible = true;
+            } else {
+                iframe.src = ''; // Clear iframe
+                loginPageVisible = false;
+            }
         }
     };
 

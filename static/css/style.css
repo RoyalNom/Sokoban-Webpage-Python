@@ -27,6 +27,12 @@ header {
 
 nav.navigation {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+nav.navigation > * {
+    margin-left: 40px;
 }
 
 .navigation a {
@@ -166,4 +172,12 @@ iframe {
     position: fixed;
     left: 180px;
     top: 80px;
+}
+
+.navigation .welcome-msg {
+    position: relative;
+    font-size: 1em;
+    color: white;
+    font-weight: 500;
+    margin-right: 40px;
 }

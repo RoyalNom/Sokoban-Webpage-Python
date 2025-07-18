@@ -64,7 +64,12 @@ def login():
         user = User.query.filter_by(username=form.username.data).first() # Checks if user exists
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            # return redirect(url_for('dashboard'))
+            return '''
+                <script type="text/javascript">
+                    window.top.location.href = "/";
+                </script>
+            '''
         else:
             return "Login Unsuccessful. Please check username and password."
     return render_template('login.html', form=form)
@@ -78,7 +83,7 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
