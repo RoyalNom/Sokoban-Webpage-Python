@@ -13,7 +13,7 @@ bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}
 app.config['SECRET_KEY'] = 'whatsecretkey' # Secret key for session management, MUST BE CHANGED FOR DEPLOYMENT
 
 db = SQLAlchemy(app) # Initialize Database
@@ -26,11 +26,22 @@ login_manager.login_view = 'login'  # Redirect to login page if not logged in
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-#Table for login database
+# Table for login information
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+
+# Table for leaderboard scores information
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False)
+    level = db.Column(db.String(30), nullable=False)
+    moves = db.Column(db.Integer, nullable=False)
+    time_taken = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return f"Score('{self.username}', '{self.score}')"
 
 # Registration form, (there might be a better way to do this)
 class RegistrationForm(FlaskForm):
@@ -96,8 +107,12 @@ def register():
         db.session.commit()
         return redirect(url_for('login'))
 
-
     return render_template('register.html', form=form)
+
+@app.route('/leaderboard')
+def leaderboard():
+    scores = Score.query.all()
+    return render_template('leaderboard.html', scores=scores)
 
 if __name__ == '__main__':
     app.run(debug=True)

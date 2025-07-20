@@ -42,3 +42,5 @@ password haha
 
 removed the tracking of the pycache file
 added a gitignore file
+
+python populate_score_with_dummy.py

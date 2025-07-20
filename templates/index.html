@@ -15,7 +15,7 @@
                 <span class="welcome-msg">Welcome, {{ current_user.username }}!</span>
             {% endif %}
             <a href="#">Explanation</a>
-            <a href="#">LeaderBoard</a>
+            <a href="#" id="leaderboardLink">LeaderBoard</a>
             <!-- button id="loginbtn" class="login-popup">Login</button -->
              <button id="loginbtn" class="login-popup">
                 {{ 'Logout' if current_user.is_authenticated else 'Login' }}
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Make sure that the src has a layout corresponding to its status as an iframe page-->
-    <iframe src="{{ url_for('dashboard') if current_user.is_authenticated else '' }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+    <iframe id="mainFrame" src="{{ url_for('dashboard') if current_user.is_authenticated else '' }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
        
     <script>
     // Script for the login popup
@@ -72,6 +72,14 @@
     document.getElementById('closeLevelsPanel').onclick = function() {
         document.getElementById('levelsPanel').classList.remove('open');
     };
+
+    // Script for the leaderboard link
+    document.getElementById('leaderboardLink').onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('mainFrame').src = '/leaderboard';
+        loginPageVisible = false;
+    };
     </script>
+
 </body>
 </html>

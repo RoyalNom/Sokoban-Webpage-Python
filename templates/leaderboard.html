@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LeaderBoard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleleaderboard.css') }}">
+</head>
+<body>
+    <div class="leaderboard-container">
+        <h2>Leaderboard</h2>
+        <table border="1" cellspacing="0" cellpadding="6">
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Level</th>
+                <th>Moves</th>
+                <th>Time (sec)</th>
+            </tr>
+            {% for score in scores %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ score.username }}</td>
+                <td>{{ score.level }}</td>
+                <td>{{ score.moves }}</td>
+                <td>{{ score.time_taken }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
