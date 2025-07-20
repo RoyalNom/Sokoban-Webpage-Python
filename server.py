@@ -12,7 +12,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-db_path = os.path.join(basedir, 'logindatabase.db')
+db_path = os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SECRET_KEY'] = 'whatsecretkey' # Secret key for session management, MUST BE CHANGED FOR DEPLOYMENT
 

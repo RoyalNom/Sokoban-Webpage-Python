@@ -6,5 +6,5 @@ with app.app_context():
     db.session.commit()
     print("Test user added successfully.")
 
-# Then run 'select * from user;' in sqlite3 logindatabase.db' for verfication
+# Then run 'select * from user;' in sqlite3 database.db' for verfication
 # Comment: The password is not hashed

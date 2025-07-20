@@ -28,8 +28,7 @@ To create a database in terminal:
 python setup_db.py command)
 
 To check this open a new terminal and type:
-- cd instance
-- sqlite3 logindatabase.db
+- sqlite3 database.db
 - .tables
 - .exit
 
