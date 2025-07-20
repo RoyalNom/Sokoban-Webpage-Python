@@ -13,7 +13,7 @@ bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SECRET_KEY'] = 'whatsecretkey' # Secret key for session management, MUST BE CHANGED FOR DEPLOYMENT
 
 db = SQLAlchemy(app) # Initialize Database
@@ -109,10 +109,20 @@ def register():
 
     return render_template('register.html', form=form)
 
-@app.route('/leaderboard')
-def leaderboard():
+@app.route('/leaderboard') # Default leaderboard route
+def leaderboard_all():
     scores = Score.query.all()
     return render_template('leaderboard.html', scores=scores)
+
+@app.route('/leaderboard/<level>/<sort_by>') # Creates routes (subsets of Score table) based on query filtrering for both the amount of moves and time taken
+def leaderboard_by_level_sorted(level, sort_by):
+    if sort_by == 'moves':
+        scores = Score.query.filter_by(level=level).order_by(Score.moves.asc()).all()
+    elif sort_by == 'time':
+        scores = Score.query.filter_by(level=level).order_by(Score.time_taken.asc()).all()
+    else:
+        scores = Score.query.filter_by(level=level).all()
+    return render_template('leaderboard.html', scores=scores, selected_level=level, sort_by=sort_by) # Pass the selected level and sort_by to the template
 
 if __name__ == '__main__':
     app.run(debug=True)
