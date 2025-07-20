@@ -39,3 +39,6 @@ python remove_test.py
 for testing purposes
 username agha
 password haha
+
+removed the tracking of the pycache file
+added a gitignore file
