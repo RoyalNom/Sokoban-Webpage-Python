@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, redirect, url_for
+import json
+from flask import Flask, render_template, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -28,13 +29,16 @@ def load_user(user_id):
 
 # Table for login information
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
+    def get_id(self):
+        return str(self.user_id)
+
 # Table for leaderboard scores information
 class Score(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    score_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
     level = db.Column(db.String(30), nullable=False)
     moves = db.Column(db.Integer, nullable=False)
@@ -42,6 +46,12 @@ class Score(db.Model):
 
     def __repr__(self):
         return f"Score('{self.username}', '{self.score}')"
+
+class Levels(db.Model):
+    level_id = db.Column(db.String(30), primary_key=True) # 1 to 4 for the base levels, normal names for custom levels
+    author = db.Column(db.String(20), nullable=False)
+    json_config = db.Column(db.Text, nullable=False)
+
 
 # Registration form, (there might be a better way to do this)
 class RegistrationForm(FlaskForm):
@@ -123,6 +133,16 @@ def leaderboard_by_level_sorted(level, sort_by):
     else:
         scores = Score.query.filter_by(level=level).all()
     return render_template('leaderboard.html', scores=scores, selected_level=level, sort_by=sort_by) # Pass the selected level and sort_by to the template
+
+@app.route('/play/<level_id>')
+@login_required
+def play_level(level_id):
+    level = Levels.query.filter_by(level_id=level_id).first()
+    if level:
+        config = json.loads(level.json_config)
+        return render_template('thegame.html', config=config)
+    else:
+        return f"No such level: {level_id}", 404
 
 if __name__ == '__main__':
     app.run(debug=True)

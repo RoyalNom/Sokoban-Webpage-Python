@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Webpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylelogin.css') }}">
+</head>
+<body>   
+    <h1>Game Manager</h1>
+    <pre id="jsonDisplay">{{ config | tojson(indent=2) }}</pre>
+</body>
+</html>

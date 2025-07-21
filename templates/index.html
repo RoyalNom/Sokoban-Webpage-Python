@@ -79,6 +79,16 @@
         document.getElementById('mainFrame').src = '/leaderboard';
         loginPageVisible = false;
     };
+
+    // Script for the level buttons in the side panel
+    const levelButtons = document.querySelectorAll('.submenu-buttons button');
+    levelButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const levelId = button.textContent.trim(); // e.g. "1", "2", etc.
+            document.getElementById('mainFrame').src = `/play/${levelId}`;
+            loginPageVisible = false;
+        });
+    });
     </script>
 
 </body>
