@@ -44,3 +44,5 @@ removed the tracking of the pycache file
 added a gitignore file
 
 python populate_score_with_dummy.py
+
+pip install -r requirements.txt
