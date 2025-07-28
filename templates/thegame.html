@@ -9,5 +9,9 @@
 <body>   
     <h1>Game Manager</h1>
     <pre id="jsonDisplay">{{ config | tojson(indent=2) }}</pre>
+    <script>
+    const config = {{ config | tojson }};
+    console.log(JSON.stringify(config, null, 2));
+    </script>
 </body>
 </html>
