@@ -144,5 +144,10 @@ def play_level(level_id):
     else:
         return f"No such level: {level_id}", 404
 
+@app.route('/game_engine')
+@login_required
+def game_engine():
+    return render_template('game_engine.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

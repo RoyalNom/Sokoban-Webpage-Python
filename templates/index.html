@@ -25,6 +25,7 @@
 
     <nav class="sidebar">
         <a href="#" id="openLevelsPanel">Levels</a>
+        <a href="#" id="gameEngineLink">Game Engine Test</a>
         <a href="#">Custom</a>
     </nav>
 
@@ -89,6 +90,13 @@
             loginPageVisible = false;
         });
     });
+
+    // Script for the game engine link
+    document.getElementById('gameEngineLink').onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('mainFrame').src = '/game_engine';
+        loginPageVisible = false;
+    };
     </script>
 
 </body>
