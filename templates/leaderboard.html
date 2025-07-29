@@ -9,37 +9,23 @@
 <body>
     <div class="leaderboard-container">
         {% if selected_level %}
-            <h2>Leaderboard - Level {{ selected_level }}</h2>
+            <h2>Leaderboard - Level {{ selected_level }} - Sorted by {{ mode|capitalize }}</h2>
             <div class="sort-buttons">
-                <form action="{{ url_for('leaderboard_by_level_sorted', level=selected_level, sort_by='moves') }}" method="get">
+                <form action="{{ url_for('leaderboard_moves', level=selected_level) }}" method="get">
                     <button type="submit">Sort by Fewest Moves</button>
                 </form>
-                <form action="{{ url_for('leaderboard_by_level_sorted', level=selected_level, sort_by='time') }}" method="get">
+                <form action="{{ url_for('leaderboard_time', level=selected_level) }}" method="get">
                     <button type="submit">Sort by Fastest Time</button>
                 </form>
             </div>
-        {% else %}
-            <h2>Leaderboard - All Levels</h2>
         {% endif %}
-
-        <form action="{{ url_for('leaderboard_all') }}" method="get">
-            <button type="submit">Show All</button>
-        </form>
 
         <!-- Buttons connected to individual flask routes, differing per level -->
         <div class="level-buttons">
-            <form action="{{ url_for('leaderboard_by_level_sorted', level='1', sort_by='none') }}" method="get">
-                <button type="submit">Level 1</button>
-            </form>
-            <form action="{{ url_for('leaderboard_by_level_sorted', level='2', sort_by='none') }}" method="get">
-                <button type="submit">Level 2</button>
-            </form>
-            <form action="{{ url_for('leaderboard_by_level_sorted', level='3', sort_by='none') }}" method="get">
-                <button type="submit">Level 3</button>
-            </form>
-            <form action="{{ url_for('leaderboard_by_level_sorted', level='4', sort_by='none') }}" method="get">
-                <button type="submit">Level 4</button>
-            </form>
+            <form action="{{ url_for('leaderboard_' + mode, level='1') }}" method="get"><button>Level 1</button></form>
+            <form action="{{ url_for('leaderboard_' + mode, level='2') }}" method="get"><button>Level 2</button></form>
+            <form action="{{ url_for('leaderboard_' + mode, level='3') }}" method="get"><button>Level 3</button></form>
+            <form action="{{ url_for('leaderboard_' + mode, level='4') }}" method="get"><button>Level 4</button></form>
         </div>
 
         <!-- Leaderboard Table Templete, it renders the scores-->
@@ -60,6 +46,9 @@
                 <td>{{ score.time_taken }}</td>
             </tr>
             {% endfor %}
+            {% if not scores %}
+            <tr><td colspan="5">No scores available for this level.</td></tr>
+            {% endif %}
         </table>
     </div>
 </body>

@@ -43,6 +43,8 @@ password haha
 removed the tracking of the pycache file
 added a gitignore file
 
+python populate_levels_with_dummy.py
 python populate_score_with_dummy.py
+python populate_user_with_dummy.py
 
 pip install -r requirements.txt

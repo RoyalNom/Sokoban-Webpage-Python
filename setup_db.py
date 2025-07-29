@@ -1,4 +1,4 @@
-from server import db, app, User, Score, Levels
+from server import db, app, User, ScoreMoves, ScoreTime, Levels
 from flask_login import UserMixin
 
 # Type python setup_db.py

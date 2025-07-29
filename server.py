@@ -7,6 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+from database_logic import update_score
 
 app = Flask(__name__)
 # db = SQLAlchemy(app) # Initialize Database
@@ -37,6 +38,7 @@ class User(db.Model, UserMixin):
         return str(self.user_id)
 
 # Table for leaderboard scores information
+"""
 class Score(db.Model):
     score_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
@@ -46,6 +48,28 @@ class Score(db.Model):
 
     def __repr__(self):
         return f"Score('{self.username}', '{self.score}')"
+"""
+class ScoreMoves(db.Model):
+    score_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False)
+    level = db.Column(db.String(30), nullable=False)
+    moves = db.Column(db.Integer, nullable=False)
+    time_taken = db.Column(db.Float, nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('username', 'level', name='unique_username_level'),
+    )
+
+class ScoreTime(db.Model):
+    score_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False)
+    level = db.Column(db.String(30), nullable=False)
+    moves = db.Column(db.Integer, nullable=False)
+    time_taken = db.Column(db.Float, nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('username', 'level', name='unique_username_level'),
+    )
 
 class Levels(db.Model):
     level_id = db.Column(db.String(30), primary_key=True) # 1 to 4 for the base levels, normal names for custom levels
@@ -119,20 +143,20 @@ def register():
 
     return render_template('register.html', form=form)
 
-@app.route('/leaderboard') # Default leaderboard route
-def leaderboard_all():
-    scores = Score.query.all()
-    return render_template('leaderboard.html', scores=scores)
+# Leaderboard routes logic, with a default route to moves level 1
+@app.route('/leaderboard') 
+def default_leaderboard():
+    return redirect(url_for('leaderboard_moves', level='1'))
 
-@app.route('/leaderboard/<level>/<sort_by>') # Creates routes (subsets of Score table) based on query filtrering for both the amount of moves and time taken
-def leaderboard_by_level_sorted(level, sort_by):
-    if sort_by == 'moves':
-        scores = Score.query.filter_by(level=level).order_by(Score.moves.asc()).all()
-    elif sort_by == 'time':
-        scores = Score.query.filter_by(level=level).order_by(Score.time_taken.asc()).all()
-    else:
-        scores = Score.query.filter_by(level=level).all()
-    return render_template('leaderboard.html', scores=scores, selected_level=level, sort_by=sort_by) # Pass the selected level and sort_by to the template
+@app.route('/leaderboard/moves/<level>')
+def leaderboard_moves(level):
+    scores = ScoreMoves.query.filter_by(level=level).order_by(ScoreMoves.moves.asc()).all()
+    return render_template('leaderboard.html', scores=scores, selected_level=level, mode='moves')
+
+@app.route('/leaderboard/time/<level>')
+def leaderboard_time(level):
+    scores = ScoreTime.query.filter_by(level=level).order_by(ScoreTime.time_taken.asc()).all()
+    return render_template('leaderboard.html', scores=scores, selected_level=level, mode='time')
 
 @app.route('/game_engine/<level_id>')
 @login_required
