@@ -134,20 +134,15 @@ def leaderboard_by_level_sorted(level, sort_by):
         scores = Score.query.filter_by(level=level).all()
     return render_template('leaderboard.html', scores=scores, selected_level=level, sort_by=sort_by) # Pass the selected level and sort_by to the template
 
-@app.route('/play/<level_id>')
+@app.route('/game_engine/<level_id>')
 @login_required
-def play_level(level_id):
+def game_engine_with_level(level_id):
     level = Levels.query.filter_by(level_id=level_id).first()
     if level:
         config = json.loads(level.json_config)
-        return render_template('thegame.html', config=config)
+        return render_template('game_engine.html', config=config)
     else:
         return f"No such level: {level_id}", 404
-
-@app.route('/game_engine')
-@login_required
-def game_engine():
-    return render_template('game_engine.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
