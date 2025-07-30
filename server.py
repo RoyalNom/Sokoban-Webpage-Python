@@ -158,6 +158,10 @@ def leaderboard_time(level):
     scores = ScoreTime.query.filter_by(level=level).order_by(ScoreTime.time_taken.asc()).all()
     return render_template('leaderboard.html', scores=scores, selected_level=level, mode='time')
 
+@app.route('/explanation')
+def explanation():
+    return render_template('explanation.html')
+
 @app.route('/game_engine/<level_id>')
 @login_required
 def game_engine_with_level(level_id):

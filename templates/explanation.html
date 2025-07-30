@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <title>Login Webpage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylelogin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylegame.css') }}">
 </head>
 <body>   
-    <h1>Game Manager</h1>
-    <pre id="jsonDisplay">{{ config | tojson(indent=2) }}</pre>
-    <script>
-    const config = {{ config | tojson }};
-    console.log(JSON.stringify(config, null, 2));
-    </script>
+    <h1>Explanation of Game Mechanics</h1>
+    <p>
+        Sokoban is a classic puzzle game orignally created by Hiroyuki Imabayashi (1982) where the player pushes boxes around a space, trying to get them to designated locations. <br>
+        The player can only push one box at a time and cannot pull boxes. The must push these boxes into the designed target positions. <br>
+        The goal is to move all boxes to their target positions in the least number of moves and time.
+    </p>
+    <p>
+        The following symbolisation is used in the game:
+        <ul>
+            <li><strong>Player:</strong> The character you control, represented by a green triangle.</li>
+            <li><strong>Boxes:</strong> The squares you need to push, represented by a blue square.</li>
+            <li><strong>Goals:</strong> The designated positions for the boxes, represented by a red square.</li>
+        </ul>
+        As well as the following controls:
+        <ul>
+            <li><strong>Arrow Keys:</strong> Move the player in the corresponding direction.</li>
+            <li><strong>Z:</strong> Undo a move</li>
+            <li><strong>X:</strong> Redo a move</li>
+        </ul>
+    </p>
 </body>
 </html>

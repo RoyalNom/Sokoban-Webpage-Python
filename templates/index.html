@@ -14,7 +14,7 @@
             {% if current_user.is_authenticated %}
                 <span class="welcome-msg">Welcome, {{ current_user.username }}!</span>
             {% endif %}
-            <a href="#">Explanation</a>
+            <a href="#" id="explanationLink">Explanation</a>
             <a href="#" id="leaderboardLink">LeaderBoard</a>
             <!-- button id="loginbtn" class="login-popup">Login</button -->
              <button id="loginbtn" class="login-popup">
@@ -77,6 +77,12 @@
     document.getElementById('leaderboardLink').onclick = function(e) {
         e.preventDefault();
         document.getElementById('mainFrame').src = '/leaderboard';
+        loginPageVisible = false;
+    };
+    // Script for the explanation link
+    document.getElementById('explanationLink').onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('mainFrame').src = '/explanation';
         loginPageVisible = false;
     };
 
