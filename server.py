@@ -204,6 +204,21 @@ def update_score():
     except Exception as e:
         print("[ERROR] Score update failed:", e)  # Logs error to your terminal
         return jsonify({'status': 'error', 'message': str(e)}), 500
+    
+@app.route('/game_leaderboard/moves/<level>')
+def game_leaderboard_moves(level):
+    scores = ScoreMoves.query.filter_by(level=level).order_by(ScoreMoves.moves.asc()).all()
+    return render_template('gameleaderboard.html', scores=scores, selected_level=level, mode='moves')
+
+@app.route('/game_leaderboard/time/<level>')
+def game_leaderboard_time(level):
+    scores = ScoreTime.query.filter_by(level=level).order_by(ScoreTime.time_taken.asc()).all()
+    return render_template('gameleaderboard.html', scores=scores, selected_level=level, mode='time')
+
+# Test route to check if the server is running, type /test after the url in the browser to see this message
+@app.route('/test')
+def test():
+    return "Test route works!"
 
 if __name__ == '__main__':
     app.run(debug=True)

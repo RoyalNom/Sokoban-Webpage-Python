@@ -91,7 +91,7 @@
     levelButtons.forEach(button => {
         button.addEventListener('click', () => {
             const levelId = button.textContent.trim(); // e.g. "1", "2", etc.
-            document.getElementById('mainFrame').src = `/game_engine/${levelId}`;
+            document.getElementById('mainFrame').src = '/game_engine/' + levelId;
             loginPageVisible = false;
         });
     });

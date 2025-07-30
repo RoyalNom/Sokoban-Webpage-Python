@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level {{ selected_level }} Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleleaderboard.css') }}">
+</head>
+<body>
+    <div class="leaderboard-container">
+        <h2>Leaderboard - Level {{ selected_level }} - Sorted by {{ mode|capitalize }}</h2>
+        
+        <div class="sort-buttons">
+            <form action="{{ url_for('game_leaderboard_moves', level=selected_level) }}" method="get">
+                <button type="submit">Sort by Fewest Moves</button>
+            </form>
+            <form action="{{ url_for('game_leaderboard_time', level=selected_level) }}" method="get">
+                <button type="submit">Sort by Fastest Time</button>
+            </form>
+        </div>
+
+        <table border="1" cellspacing="0" cellpadding="6">
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Moves</th>
+                <th>Time (sec)</th>
+            </tr>
+            {% for score in scores %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ score.username }}</td>
+                <td>{{ score.moves }}</td>
+                <td>{{ score.time_taken }}</td>
+            </tr>
+            {% endfor %}
+            {% if not scores %}
+            <tr><td colspan="4">No scores available for this level.</td></tr>
+            {% endif %}
+        </table>
+    </div>
+</body>
+</html>

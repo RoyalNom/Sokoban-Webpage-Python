@@ -1,0 +1,16 @@
+.game-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-box {
+  flex: 1;
+}
+
+#leaderboardFrame {
+  flex: 1;
+  border: 1px solid #ccc;
+}
