@@ -25,7 +25,7 @@
 
     <nav class="sidebar">
         <a href="#" id="openLevelsPanel">Levels</a>
-        <a href="#">Custom</a>
+        <a href="#" id="openCustomLevels">Custom</a>
     </nav>
 
     <div id="levelsPanel" class="sidepanel">
@@ -83,6 +83,12 @@
     document.getElementById('explanationLink').onclick = function(e) {
         e.preventDefault();
         document.getElementById('mainFrame').src = '/explanation';
+        loginPageVisible = false;
+    };
+    // Script for the custom levels link
+    document.getElementById('openCustomLevels').onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('mainFrame').src = '/custom_levels';
         loginPageVisible = false;
     };
 

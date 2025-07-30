@@ -220,5 +220,11 @@ def game_leaderboard_time(level):
 def test():
     return "Test route works!"
 
+@app.route('/custom_levels')
+@login_required
+def custom_levels():
+    all_levels = Levels.query.all()
+    return render_template('custom_levels.html', levels=all_levels)
+
 if __name__ == '__main__':
     app.run(debug=True)

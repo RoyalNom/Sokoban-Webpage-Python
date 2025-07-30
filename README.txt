@@ -41,3 +41,12 @@ password: 'haha'
 > Info on how to run/ do tests
 Once you are logged into a new account, try to beat a level
 If you have completed a level check the leaderboard page to see your new score
+
+P5js can be used to load and test game logic. For it to function you need to take the following folder and paste them under the sketch files head in a new p5js project:
+- function.js
+- sketch.js
+- stylegame.css
+- game_engine_test
+
+If nothing seems to be appearing, than that means that json_config is empty in sketch.js
+You may grab a config from the populate_levels_with_dummy after the json dump part, and paste it into the json_config within the sketch.hs file

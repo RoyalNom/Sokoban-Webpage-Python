@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Level Webpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecustom.css') }}">
+</head>
+<body>
+    <h1>You are in Custom Levels</h1>
+    <button id="uploadButton">Upload Level</button>
+    <ul>
+    {% for level in levels %}
+        <li>
+            <a href="{{ url_for('game_engine_with_level', level_id=level.level_id) }}">
+                '{{ level.level_id }}' by '{{ level.author }}'
+            </a>
+        </li>
+    {% else %}
+        <li>No custom levels found.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

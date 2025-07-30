@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylegame.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <main>
+    </main>
+    <button id="resetButton"> Reset Level</button>
+    <p id="moveCounter">Moves: 0</p>
+    <p id="timer">Time: 0.0s</p>
+    <p id="winMessage"></p>
+    <script src="functions.js"></script>
+    <script src="sketch.js"></script>
+    <script>
+      document.getElementById("resetButton").addEventListener("click", () => {
+        resetGame();
+      });
+    </script>
+  </body>
+</html>

@@ -31,10 +31,13 @@ function setup() {
       board[i][j] = 1;
     }
   }
-  let pathPositions = json_config.paths;
-  let boxPositions = json_config.boxes;
-  let goalPositions = json_config.goals;
-  let PlayerPosition = [json_config.player];
+
+  // Default empty arrays if any are undefined
+  let pathPositions = json_config.paths ?? [];
+  let boxPositions = json_config.boxes ?? [];
+  let goalPositions = json_config.goals ?? [];
+  let PlayerPosition = json_config.player !== undefined ? [json_config.player] : [];
+
   placePaths(pathPositions);
   placeCardboardBoxes(boxPositions);
   createGoals(goalPositions);
