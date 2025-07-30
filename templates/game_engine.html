@@ -10,15 +10,19 @@
   <body>
     <main>
     </main>
+    <h2>Level: {{ selected_level }}</h2>
     <button id="resetButton"> Reset Level</button>
     <p id="moveCounter">Moves: 0</p>
     <p id="timer">Time: 0.0s</p>
     <p id="winMessage"></p>
-    <script>
-        const json_config = {{ config | tojson | safe }};
-    </script>
     <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
+    <script>
+      // Pass the username and level to the sketch.js script
+      const json_config = {{ config | tojson | safe }};
+      json_config.username = "{{ current_user.username }}";
+      json_config.level = "{{ selected_level }}";
+    </script>
     <script>
       document.getElementById("resetButton").addEventListener("click", () => {
         resetGame();

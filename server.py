@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, redirect, url_for, jsonify
+from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -164,9 +164,42 @@ def game_engine_with_level(level_id):
     level = Levels.query.filter_by(level_id=level_id).first()
     if level:
         config = json.loads(level.json_config)
-        return render_template('game_engine.html', config=config)
+        return render_template('game_engine.html', config=config, selected_level=level_id)
     else:
         return f"No such level: {level_id}", 404
+    
+@app.route('/update_score', methods=['POST'])
+def update_score():
+    try:
+        data = request.get_json()
+        username = data['username']
+        level = data['level']
+        moves = int(data['moves'])
+        time_taken = float(data['time_taken'])
+
+        print(f"[DEBUG] Received: {username}, Level: {level}, Moves: {moves}, Time: {time_taken}")
+
+        # Your existing DB logic here...
+        existing_move = ScoreMoves.query.filter_by(username=username, level=level).first()
+        if existing_move:
+            existing_move.moves = min(existing_move.moves, moves)
+            existing_move.time_taken = time_taken
+        else:
+            db.session.add(ScoreMoves(username=username, level=level, moves=moves, time_taken=time_taken))
+
+        existing_time = ScoreTime.query.filter_by(username=username, level=level).first()
+        if existing_time:
+            existing_time.time_taken = min(existing_time.time_taken, time_taken)
+            existing_time.moves = moves
+        else:
+            db.session.add(ScoreTime(username=username, level=level, moves=moves, time_taken=time_taken))
+
+        db.session.commit()
+        return jsonify({'status': 'success'})
+
+    except Exception as e:
+        print("[ERROR] Score update failed:", e)  # Logs error to your terminal
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

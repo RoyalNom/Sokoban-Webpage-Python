@@ -8,6 +8,7 @@ let goals = Array(columns + 2).fill().map(() => Array(rows + 2).fill(false)); //
 let completed_goals = 0; let total_goals = 0;
 
 let gameWon = false;
+let scoreReported = false;
 // Undo Redo Logic
 let moveStack = [];
 let redoStack = [];
@@ -55,6 +56,11 @@ function draw() {
     textSize(48);
     textAlign(CENTER, CENTER)
     text("YOU WON!", width / 2, height / 2);
+    if (gameWon && !scoreReported) {
+      console.log("Sending score for level:", json_config.level);
+      updateScore(json_config.username, json_config.level);
+      scoreReported = true;
+    }
   }
   if (
     !keyIsDown(LEFT_ARROW) &&
@@ -73,6 +79,7 @@ function draw() {
 //function checkgoals()
 
 function resetGame(){
+  scoreReported = false;
   location.reload();
 }
 
@@ -154,4 +161,29 @@ function keyPressed(){
 
 //function undoMove() {
 
+}
+
+function updateScore(username, level) {
+  const scoreData = {
+    username: username,
+    level: level,
+    moves: moves_amount,
+    time_taken: elapsedTime.toFixed(1)
+  };
+
+  fetch('/update_score', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(scoreData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log("Score updated successfully.");
+      document.getElementById("winMessage").textContent = "Your score has been saved!";
+    } else {
+      console.error("Failed to update score.");
+    }
+  });
 }
