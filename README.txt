@@ -1,3 +1,6 @@
+The Sokoban Flask application by Anthony
+
+> Replace the following
 sokoban webpage/
 ├── index.html
 ├── css/
@@ -7,44 +10,34 @@ sokoban webpage/
 └── README.md 
 
 How to run from scratch:
-1. install python first
+1. install python (3.9 though later versions work too) first
+
 2. Install the Flask (the python flask is used to host the server):
 pip install flask
-3. run:
-python server.py
+or 
+pip install -r requirements.txt
+(^ If this does not work, you can use 'pip install ___' replaced by the corresponding module)
+
+3. (Optional): if the database.db file needs to be initialised, or is removed for any reason, run the following:
+- python setup_db.py
+- python populate_levels_with_dummy.py
+- python populate_score_with_dummy.py
+- python populate_user_with_dummy.py
+
+4. run: python server.py
 
 Make sure that loaded iframes and so new templates have a layout which accomodates for the fact that it is an iframe
 
-pip install SQLAlchemy
-pip install flask-sqlalchemy
-pip install 
-
-To create a database in terminal:
-- python
-- from app(server) import db
-- db.create_all()
-- exit()
-(or just run the 
-python setup_db.py command)
-
-To check this open a new terminal and type:
+> Does not work, no Idea why, use: 'python test_database_existance.py'
+To check if the database is created open a new terminal and type:
 - sqlite3 database.db
 - .tables
 - .exit
 
-ls and cd..
-python add_user_test.py
-python remove_test.py
+for testing purposes you may use the following credentials (though you could of course make your own account):
+username: 'agha'
+password: 'haha'
 
-for testing purposes
-username agha
-password haha
-
-removed the tracking of the pycache file
-added a gitignore file
-
-python populate_levels_with_dummy.py
-python populate_score_with_dummy.py
-python populate_user_with_dummy.py
-
-pip install -r requirements.txt
+> Info on how to run/ do tests
+Once you are logged into a new account, try to beat a level
+If you have completed a level check the leaderboard page to see your new score
