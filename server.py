@@ -1,5 +1,6 @@
 import os
 import json
+import numpy as np
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -8,6 +9,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from database_logic import update_score
+from PIL import Image
 
 app = Flask(__name__)
 # db = SQLAlchemy(app) # Initialize Database
@@ -225,6 +227,101 @@ def test():
 def custom_levels():
     all_levels = Levels.query.all()
     return render_template('custom_levels.html', levels=all_levels)
+
+@app.route('/upload_custom_level', methods=['POST'])
+@login_required
+def upload_custom_level():
+    file = request.files.get('level_image')
+    level_name = request.form.get('level_name')
+    author = current_user.username
+
+    if not file or not level_name:
+        return "Missing file or level name", 400
+    
+    # Check if level name already exists
+    if Levels.query.filter_by(level_id=level_name).first():
+        return "A level with this name already exists.", 400
+
+    # Save file temporarily in the images folder
+    images_dir = os.path.join('static', 'images')
+    os.makedirs(images_dir, exist_ok=True)
+    temp_path = os.path.join(images_dir, file.filename)
+    file.save(temp_path)
+
+    # Color map mappings for each type of tile/ object in the game
+    COLOR_MAP = {
+        'box': (0, 0, 255),
+        'goal': (255, 0, 0),
+        'player': (0, 255, 0),
+        'path': (255, 255, 255)
+    }
+
+    # Function to find the closest color in the COLOR_MAP, Tolerance is used
+    # to allow for slight deviations from the full vibrant rgb colors
+    TOLERANCE = 128
+    def closest_color(pixel):
+        for key, rgb_color in COLOR_MAP.items():
+            if all(abs(int(pixel[i]) - rgb_color[i]) < TOLERANCE for i in range(3)):
+                return key
+        return None
+
+    def process_image(image_path):
+        img = Image.open(image_path).convert('RGB') # ensure that the image is in RGB format
+        
+        # divide the image into a 15x15 grid
+        width, height = img.size
+        cell_w, cell_h = width // 15, height // 15
+
+        boxes, goals, paths = [], [], []
+        player = None
+
+        for row in range(15):
+            for col in range(15):
+                # Calculate the boundary pixels for a cell
+                left = col * cell_w
+                upper = row * cell_h
+                right = left + cell_w
+                lower = upper + cell_h
+
+                cell = img.crop((left, upper, right, lower))
+                pixels = np.array(cell)
+                avg_color = pixels.mean(axis=(0, 1)).astype(int)
+
+                pixel_object = closest_color(avg_color)
+                coord = [col, row] # mimics x and y
+
+                if pixel_object == 'box':
+                    boxes.append(coord)
+                elif pixel_object == 'goal':
+                    goals.append(coord)
+                elif pixel_object == 'path':
+                    paths.append(coord)
+                elif pixel_object == 'player':
+                    player = coord
+
+        config = {
+            "boxes": boxes,
+            "goals": goals,
+            "paths": paths,
+            "player": player
+        }
+        return json.dumps(config, indent=2)
+
+    try:
+        level_json = process_image(temp_path)
+        new_level = Levels(
+            level_id=level_name,
+            author=author,
+            json_config=level_json
+        )
+        db.session.add(new_level)
+        db.session.commit()
+        os.remove(temp_path)
+        return redirect(url_for('custom_levels'))
+    except Exception as e:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        return f"Error processing image: {e}", 500
 
 if __name__ == '__main__':
     app.run(debug=True)
