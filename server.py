@@ -309,6 +309,11 @@ def upload_custom_level():
 
     try:
         level_json = process_image(temp_path)
+        # Check to see if the amount of goals can be filled by the boxes
+        if len(level_json['goals']) != len(level_json['boxes']):
+            os.remove(temp_path)
+            return "The number of boxes does not match the number of goals.", 400
+
         new_level = Levels(
             level_id=level_name,
             author=author,
