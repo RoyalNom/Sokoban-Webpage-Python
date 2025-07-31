@@ -41,6 +41,13 @@
         console.log("Loading leaderboard URL:", url);
         document.getElementById("gameleaderboardFrame").src = '/game_leaderboard/moves/' + level;
       });
+
+      window.addEventListener("keydown", function(e) {
+        const keysToBlock = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+        if (keysToBlock.includes(e.key)) {
+          e.preventDefault();
+        }
+      }, false);
     </script>
     
   </body>
