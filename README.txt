@@ -44,7 +44,7 @@ P5js can be used to load and test game logic. For it to function you need to tak
 - function.js
 - sketch.js
 - stylegame.css
-- game_engine_test
+- game_engine_test.html
 
 If nothing seems to be appearing, than that means that json_config is empty in sketch.js
 You may grab a config from the populate_levels_with_dummy after the json dump part, and paste it into the json_config within the sketch.hs file
