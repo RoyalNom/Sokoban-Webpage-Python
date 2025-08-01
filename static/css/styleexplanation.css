@@ -1,0 +1,20 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.comparison-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.comparison-img {
+    max-width: 200px;
+}
+
+.comparison_arrow {
+    font-size: 2em;
+}

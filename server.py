@@ -256,6 +256,13 @@ def upload_custom_level():
         'path': (255, 255, 255)
     }
 
+    template_images = {
+        "15by15grid.png",
+        "15by15gridexample.png",
+        "15by15result.png",
+        "winton.png"
+    }
+
     # Function to find the closest color in the COLOR_MAP, Tolerance is used
     # to allow for slight deviations from the full vibrant rgb colors
     TOLERANCE = 128
@@ -311,7 +318,8 @@ def upload_custom_level():
         level_json = process_image(temp_path)
         # Check to see if the amount of goals can be filled by the boxes
         if len(level_json['goals']) != len(level_json['boxes']):
-            os.remove(temp_path)
+            if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
+                os.remove(temp_path)
             return "The number of boxes does not match the number of goals.", 400
 
         new_level = Levels(
@@ -321,11 +329,13 @@ def upload_custom_level():
         )
         db.session.add(new_level)
         db.session.commit()
-        os.remove(temp_path)
+        if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
+            os.remove(temp_path)
         return redirect(url_for('custom_levels'))
     except Exception as e:
         if os.path.exists(temp_path):
-            os.remove(temp_path)
+            if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
+                os.remove(temp_path)
         return f"Error processing image: {e}", 500
 
 if __name__ == '__main__':
