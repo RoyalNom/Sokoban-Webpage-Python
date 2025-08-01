@@ -309,8 +309,9 @@ def upload_custom_level():
 
     try:
         level_json = process_image(temp_path)
+        config = json.loads(level_json)
         # Check to see if the amount of goals can be filled by the boxes
-        if len(level_json['goals']) != len(level_json['boxes']):
+        if len(config['goals']) != len(config['boxes']):
             if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
                 os.remove(temp_path)
             return "The number of boxes does not match the number of goals."
@@ -325,7 +326,7 @@ def upload_custom_level():
         if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
             os.remove(temp_path)
         return redirect(url_for('custom_levels'))
-    # 
+    # If the image is not in the correct format or if there is an error processing it
     except Exception as e:
         if os.path.exists(temp_path):
             if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
@@ -343,45 +344,47 @@ def admin():
     score_time = ScoreTime.query.all()
     return render_template('admin.html', users=users, levels=levels, score_moves=score_moves, score_time=score_time)
 
-@app.route('/admin/delete/<model>/<int:user_id>', methods=['POST'])
+# 4 hardcoded delete routes for each of the database tables
+# Could be generalized but initial attempts did not work
+@app.route('/admin/delete/user/<int:user_id>', methods=['POST'])
 @login_required
-def delete_item(model, user_id):
+def delete_user(user_id):
     admin_required()
-    
-    if model == 'user':
-        user = User.query.get(user_id)
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return redirect(url_for('admin'))
-        else:
-            return "User not found"
-    elif model == 'level':
-        level = Levels.query.get(user_id)
-        if level:
-            db.session.delete(level)
-            db.session.commit()
-            return redirect(url_for('admin'))
-        else:
-            return "Level not found"
-    elif model == 'score_moves':
-        score = ScoreMoves.query.get(user_id)
-        if score:
-            db.session.delete(score)
-            db.session.commit()
-            return redirect(url_for('admin'))
-        else:
-            return "Score not found"
-    elif model == 'score_time':
-        score = ScoreTime.query.get(user_id)
-        if score:
-            db.session.delete(score)
-            db.session.commit()
-            return redirect(url_for('admin'))
-        else:
-            return "Score not found"
-    else:
-        return "Invalid model type"
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/level/<level_id>', methods=['POST'])
+@login_required
+def delete_level(level_id):
+    admin_required()
+    level = Levels.query.get(level_id)
+    if level:
+        db.session.delete(level)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/score_moves/<int:score_id>', methods=['POST'])
+@login_required
+def delete_score_moves(score_id):
+    admin_required()
+    score = ScoreMoves.query.get(score_id)
+    if score:
+        db.session.delete(score)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/score_time/<int:score_id>', methods=['POST'])
+@login_required
+def delete_score_time(score_id):
+    admin_required()
+    score = ScoreTime.query.get(score_id)
+    if score:
+        db.session.delete(score)
+        db.session.commit()
+    return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
