@@ -32,6 +32,11 @@ function setup() {
     }
   }
 
+  let canvas = document.querySelector('canvas');
+  if (canvas) {
+    document.getElementById('canvas-holder').appendChild(canvas);
+  }
+
   // Default empty arrays if any are undefined
   let pathPositions = json_config.paths ?? [];
   let boxPositions = json_config.boxes ?? [];

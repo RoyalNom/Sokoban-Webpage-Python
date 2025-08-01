@@ -14,7 +14,7 @@ body {
 }
 
 .top-row {
-    display: flex;          /* keeps title, form, and link on the same line */
+    display: flex;
     align-items: center;
 }
 

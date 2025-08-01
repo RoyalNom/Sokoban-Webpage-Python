@@ -1,6 +1,6 @@
 html, body {
   margin: 0;
-  padding: 0;
+  padding-bottom: 200px;
   overflow: auto;
   height: 100%;
 }
@@ -9,4 +9,16 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.sort-buttons,
+.level-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.level-buttons {
+    margin-bottom: 20px;
 }

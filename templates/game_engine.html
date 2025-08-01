@@ -11,16 +11,18 @@
     <main>
     </main>
     <div class="game-wrapper">
-      <div class="game-box">
+      <div class="game-main">
         <h2>Level: {{ selected_level }}</h2>
         <button id="resetButton">Reset Level</button>
-        <button id="gameleaderboardButton">Display Leaderboard</button>
+        <button id="gameleaderboardButton">Display Level Leaderboard</button>
         <p id="moveCounter">Moves: 0</p>
         <p id="timer">Time: 0.0s</p>
         <p id="winMessage"></p>
+        <div id="canvas-holder"></div>
       </div>
-      <!-- The Iframe appears in the bottom right corner, I do not know why-->
-      <iframe id="gameleaderboardFrame" src="" width="500" height="400" frameborder="0"></iframe>
+      <div class="game-leaderboard">
+        <iframe id="gameleaderboardFrame" src="" width="350" height="500" frameborder="0"></iframe>
+      </div>
     </div>
     <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sketch.js') }}"></script>
