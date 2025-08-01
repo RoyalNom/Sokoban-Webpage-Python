@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecustom.css') }}">
 </head>
 <body>
-    <h1>You are in Custom Levels</h1>
+    <h1>Custom Levels</h1>
     <form id="uploadForm" action="{{ url_for('upload_custom_level') }}" method="post" enctype="multipart/form-data">
         <input type="file" name="level_image" accept="image/*" required>
         <input type="text" name="level_name" placeholder="Level Name" required>

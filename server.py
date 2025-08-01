@@ -8,19 +8,22 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-from database_logic import update_score
 from PIL import Image
 
 app = Flask(__name__)
-# db = SQLAlchemy(app) # Initialize Database
 bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
-app.config['SECRET_KEY'] = 'whatsecretkey' # Secret key for session management, MUST BE CHANGED FOR DEPLOYMENT
+app.config['SECRET_KEY'] = 'whatsecretkeylol' # Secret key for session management, if you want to deploy this as an actual server than this method must be reworked
 
 db = SQLAlchemy(app) # Initialize Database
+
+# Helper function to check if the user is an admin
+def admin_required():
+    if not current_user.is_admin:
+        return "Access denied"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -162,7 +165,7 @@ def game_engine_with_level(level_id):
         config = json.loads(level.json_config)
         return render_template('game_engine.html', config=config, selected_level=level_id)
     else:
-        return f"No such level: {level_id}", 404
+        return f"No such level: {level_id} exists."
     
 @app.route('/update_score', methods=['POST'])
 def update_score():
@@ -226,11 +229,11 @@ def upload_custom_level():
     author = current_user.username
 
     if not file or not level_name:
-        return "Missing file or level name", 400
+        return "Missing file or level name"
     
     # Check if level name already exists
     if Levels.query.filter_by(level_id=level_name).first():
-        return "A level with this name already exists.", 400
+        return "A level with this name already exists."
 
     # Save file temporarily in the images folder
     images_dir = os.path.join('static', 'images')
@@ -310,7 +313,7 @@ def upload_custom_level():
         if len(level_json['goals']) != len(level_json['boxes']):
             if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
                 os.remove(temp_path)
-            return "The number of boxes does not match the number of goals.", 400
+            return "The number of boxes does not match the number of goals."
 
         new_level = Levels(
             level_id=level_name,
@@ -322,17 +325,17 @@ def upload_custom_level():
         if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
             os.remove(temp_path)
         return redirect(url_for('custom_levels'))
+    # 
     except Exception as e:
         if os.path.exists(temp_path):
             if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
                 os.remove(temp_path)
-        return f"Error processing image: {e}", 500
+        return f"Error processing image: {e}"
     
 @app.route('/admin')
 @login_required
 def admin():
-    if not current_user.is_admin:
-        return "Access denied", 403
+    admin_required()
 
     users = User.query.all()
     levels = Levels.query.all()
@@ -340,49 +343,45 @@ def admin():
     score_time = ScoreTime.query.all()
     return render_template('admin.html', users=users, levels=levels, score_moves=score_moves, score_time=score_time)
 
-@app.route('/admin/delete/user/<int:user_id>', methods=['POST'])
+@app.route('/admin/delete/<model>/<int:user_id>', methods=['POST'])
 @login_required
-def delete_user(user_id):
-    if not current_user.is_admin:
-        return "Access denied", 403
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/admin/delete/level/<level_id>', methods=['POST'])
-@login_required
-def delete_level(level_id):
-    if not current_user.is_admin:
-        return "Access denied", 403
-    level = Levels.query.get(level_id)
-    if level:
-        db.session.delete(level)
-        db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/admin/delete/score_moves/<int:score_id>', methods=['POST'])
-@login_required
-def delete_score_moves(score_id):
-    if not current_user.is_admin:
-        return "Access denied", 403
-    score = ScoreMoves.query.get(score_id)
-    if score:
-        db.session.delete(score)
-        db.session.commit()
-    return redirect(url_for('admin'))
-
-@app.route('/admin/delete/score_time/<int:score_id>', methods=['POST'])
-@login_required
-def delete_score_time(score_id):
-    if not current_user.is_admin:
-        return "Access denied", 403
-    score = ScoreTime.query.get(score_id)
-    if score:
-        db.session.delete(score)
-        db.session.commit()
-    return redirect(url_for('admin'))
+def delete_item(model, user_id):
+    admin_required()
+    
+    if model == 'user':
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        else:
+            return "User not found"
+    elif model == 'level':
+        level = Levels.query.get(user_id)
+        if level:
+            db.session.delete(level)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        else:
+            return "Level not found"
+    elif model == 'score_moves':
+        score = ScoreMoves.query.get(user_id)
+        if score:
+            db.session.delete(score)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        else:
+            return "Score not found"
+    elif model == 'score_time':
+        score = ScoreTime.query.get(user_id)
+        if score:
+            db.session.delete(score)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        else:
+            return "Score not found"
+    else:
+        return "Invalid model type"
 
 if __name__ == '__main__':
     app.run(debug=True)

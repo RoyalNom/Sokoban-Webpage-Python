@@ -2,13 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
-    <style>
-        .admin-tables { display: flex; gap: 24px; }
-        .admin-table { border: 1px solid #ccc; padding: 8px; }
-        .admin-table th, .admin-table td { padding: 4px 8px; }
-        .delete-btn { color: red; cursor: pointer; border: none; background: none; font-size: 1.2em; }
-    </style>
+    <title>Admin Webpage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleadmin.css') }}">
 </head>
 <body>
     <h1>Admin Panel</h1>
@@ -17,15 +12,15 @@
         <div class="admin-table">
             <h3>Users</h3>
             <table>
-                <tr><th>ID</th><th>Username</th><th>Admin</th><th>Delete</th></tr>
+                <tr><th>ID</th><th>Username</th><th>Admin</th></tr>
                 {% for user in users %}
                 <tr>
                     <td>{{ user.user_id }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.is_admin }}</td>
                     <td>
-                        <form method="post" action="{{ url_for('delete_user', user_id=user.user_id) }}">
-                            <button class="delete-btn" type="submit">&#10060;</button>
+                        <form method="post" action="{{ url_for('delete_item', model='user', user_id=user.user_id) }}">
+                            <button class="delete-btn" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -36,14 +31,14 @@
         <div class="admin-table">
             <h3>Levels</h3>
             <table>
-                <tr><th>ID</th><th>Author</th><th>Delete</th></tr>
+                <tr><th>ID</th><th>Author</th></tr>
                 {% for level in levels %}
                 <tr>
                     <td>{{ level.level_id }}</td>
                     <td>{{ level.author }}</td>
                     <td>
-                        <form method="post" action="{{ url_for('delete_level', level_id=level.level_id) }}">
-                            <button class="delete-btn" type="submit">&#10060;</button>
+                        <form method="post" action="{{ url_for('delete_item', model='level', user_id=level.level_id) }}">
+                            <button class="delete-btn" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -54,16 +49,17 @@
         <div class="admin-table">
             <h3>ScoreMoves</h3>
             <table>
-                <tr><th>ID</th><th>User</th><th>Level</th><th>Moves</th><th>Delete</th></tr>
+                <tr><th>ID</th><th>User</th><th>Level</th><th>Moves</th><th>Time</th></tr>
                 {% for score in score_moves %}
                 <tr>
                     <td>{{ score.score_id }}</td>
                     <td>{{ score.username }}</td>
                     <td>{{ score.level }}</td>
                     <td>{{ score.moves }}</td>
+                    <td>{{ score.time_taken }}</td>
                     <td>
-                        <form method="post" action="{{ url_for('delete_score_moves', score_id=score.score_id) }}">
-                            <button class="delete-btn" type="submit">&#10060;</button>
+                        <form method="post" action="{{ url_for('delete_item', model='score_moves', user_id=score.score_id) }}">
+                            <button class="delete-btn" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -74,16 +70,17 @@
         <div class="admin-table">
             <h3>ScoreTime</h3>
             <table>
-                <tr><th>ID</th><th>User</th><th>Level</th><th>Time</th><th>Delete</th></tr>
+                <tr><th>ID</th><th>User</th><th>Level</th><th>Moves</th><th>Time</th></tr>
                 {% for score in score_time %}
                 <tr>
                     <td>{{ score.score_id }}</td>
                     <td>{{ score.username }}</td>
                     <td>{{ score.level }}</td>
+                    <td>{{ score.moves }}</td>
                     <td>{{ score.time_taken }}</td>
                     <td>
-                        <form method="post" action="{{ url_for('delete_score_time', score_id=score.score_id) }}">
-                            <button class="delete-btn" type="submit">&#10060;</button>
+                        <form method="post" action="{{ url_for('delete_item', model='score_time', user_id=score.score_id) }}">
+                            <button class="delete-btn" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>

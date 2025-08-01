@@ -20,7 +20,7 @@
             </div>
         {% endif %}
 
-        <!-- Buttons connected to individual flask routes, differing per level -->
+        <!-- Buttons connected to leaderboard route, differing per level -->
         <div class="level-buttons">
             <form action="{{ url_for('leaderboard_' + mode, level='1') }}" method="get"><button>Level 1</button></form>
             <form action="{{ url_for('leaderboard_' + mode, level='2') }}" method="get"><button>Level 2</button></form>
@@ -28,7 +28,7 @@
             <form action="{{ url_for('leaderboard_' + mode, level='4') }}" method="get"><button>Level 4</button></form>
         </div>
 
-        <!-- Leaderboard Table Templete, it renders the scores-->
+        <!-- Leaderboard Table Templete -->
         <table border="1" cellspacing="0" cellpadding="6">
             <tr>
                 <th>#</th>
@@ -46,6 +46,7 @@
                 <td>{{ score.time_taken }}</td>
             </tr>
             {% endfor %}
+            <!-- If a level has no scores -->
             {% if not scores %}
             <tr><td colspan="5">No scores available for this level.</td></tr>
             {% endif %}

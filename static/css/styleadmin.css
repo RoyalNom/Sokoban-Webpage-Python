@@ -1,0 +1,32 @@
+html, body {
+  margin: 0;
+  padding-bottom: 200px;
+  overflow: auto;
+  height: 100%;
+}
+
+.admin-tables { 
+    display: flex;
+    gap: 24px; 
+}
+
+.admin-table { 
+    border: 1px; 
+    padding: 8px; 
+}
+
+.admin-table th { 
+    padding: 4px 8px; 
+}
+
+ .admin-table td { 
+    padding: 4px 8px; 
+}
+
+.delete-btn { 
+    color: red; 
+    cursor: pointer; 
+    border: none; 
+    background: none; 
+    font-size: 1.2em; 
+}

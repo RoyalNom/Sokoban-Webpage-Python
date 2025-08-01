@@ -1,16 +1,10 @@
-The Sokoban Flask application by Anthony
-
-> Replace the following
-sokoban webpage/
-├── index.html
-├── css/
-│   └── style.css
-├── images/
-│   └── profile.jpg
-└── README.md 
+The Sokoban Flask Webapplication by Anthony
+This Application allows user to login to an account, view leaderboards of different levels,
+gives them the ability to play levels, has to capabilty to transform images into grid configurations 
+and allows those with admin privileges to make edits to the database.
 
 How to run from scratch:
-1. install python (3.9 though later versions work too) first
+1. install python (3.9 though later versions work too) first (You may also want to setup a conda environment)
 
 2. Install the Flask (the python flask is used to host the server):
 pip install flask
@@ -54,3 +48,5 @@ P5js can be used to load and test game logic. For it to function you need to tak
 
 If nothing seems to be appearing, than that means that json_config is empty in sketch.js
 You may grab a config from the populate_levels_with_dummy after the json dump part, and paste it into the json_config within the sketch.hs file
+
+if you want to run additional tests, ensure that the 'nameoftestfile'.py file is in the same directory as the server.py file
