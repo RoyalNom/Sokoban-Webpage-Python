@@ -292,12 +292,15 @@ def upload_custom_level():
 
                 if pixel_object == 'box':
                     boxes.append(coord)
+                    paths.append(coord)
                 elif pixel_object == 'goal':
                     goals.append(coord)
+                    paths.append(coord)
                 elif pixel_object == 'path':
                     paths.append(coord)
                 elif pixel_object == 'player':
                     player = coord
+                    paths.append(coord)
 
         config = {
             "boxes": boxes,
@@ -336,7 +339,8 @@ def upload_custom_level():
 @app.route('/admin')
 @login_required
 def admin():
-    admin_required()
+    if not current_user.is_admin:
+        return "Access denied"
 
     users = User.query.all()
     levels = Levels.query.all()
@@ -349,7 +353,8 @@ def admin():
 @app.route('/admin/delete/user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
-    admin_required()
+    if not current_user.is_admin:
+        return "Access denied"
     user = User.query.get(user_id)
     if user:
         db.session.delete(user)
@@ -359,7 +364,8 @@ def delete_user(user_id):
 @app.route('/admin/delete/level/<level_id>', methods=['POST'])
 @login_required
 def delete_level(level_id):
-    admin_required()
+    if not current_user.is_admin:
+        return "Access denied"
     level = Levels.query.get(level_id)
     if level:
         db.session.delete(level)
@@ -369,7 +375,8 @@ def delete_level(level_id):
 @app.route('/admin/delete/score_moves/<int:score_id>', methods=['POST'])
 @login_required
 def delete_score_moves(score_id):
-    admin_required()
+    if not current_user.is_admin:
+        return "Access denied"
     score = ScoreMoves.query.get(score_id)
     if score:
         db.session.delete(score)
@@ -379,7 +386,8 @@ def delete_score_moves(score_id):
 @app.route('/admin/delete/score_time/<int:score_id>', methods=['POST'])
 @login_required
 def delete_score_time(score_id):
-    admin_required()
+    if not current_user.is_admin:
+        return "Access denied"
     score = ScoreTime.query.get(score_id)
     if score:
         db.session.delete(score)
