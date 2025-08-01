@@ -102,7 +102,12 @@
             loginPageVisible = false;
         });
     });
+    // Script for the admin tab
+    document.getElementById('openAdminTab').onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('mainFrame').src = '/admin';
+        loginPageVisible = false;
+    };
     </script>
-
 </body>
 </html>

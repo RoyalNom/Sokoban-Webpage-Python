@@ -327,6 +327,62 @@ def upload_custom_level():
             if os.path.basename(temp_path) not in template_images and os.path.exists(temp_path):
                 os.remove(temp_path)
         return f"Error processing image: {e}", 500
+    
+@app.route('/admin')
+@login_required
+def admin():
+    if not current_user.is_admin:
+        return "Access denied", 403
+
+    users = User.query.all()
+    levels = Levels.query.all()
+    score_moves = ScoreMoves.query.all()
+    score_time = ScoreTime.query.all()
+    return render_template('admin.html', users=users, levels=levels, score_moves=score_moves, score_time=score_time)
+
+@app.route('/admin/delete/user/<int:user_id>', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if not current_user.is_admin:
+        return "Access denied", 403
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/level/<level_id>', methods=['POST'])
+@login_required
+def delete_level(level_id):
+    if not current_user.is_admin:
+        return "Access denied", 403
+    level = Levels.query.get(level_id)
+    if level:
+        db.session.delete(level)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/score_moves/<int:score_id>', methods=['POST'])
+@login_required
+def delete_score_moves(score_id):
+    if not current_user.is_admin:
+        return "Access denied", 403
+    score = ScoreMoves.query.get(score_id)
+    if score:
+        db.session.delete(score)
+        db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/delete/score_time/<int:score_id>', methods=['POST'])
+@login_required
+def delete_score_time(score_id):
+    if not current_user.is_admin:
+        return "Access denied", 403
+    score = ScoreTime.query.get(score_id)
+    if score:
+        db.session.delete(score)
+        db.session.commit()
+    return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
