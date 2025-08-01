@@ -35,22 +35,12 @@ class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False) # This ensures new users are not admins
 
     def get_id(self):
         return str(self.user_id)
 
 # Table for leaderboard scores information
-"""
-class Score(db.Model):
-    score_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False)
-    level = db.Column(db.String(30), nullable=False)
-    moves = db.Column(db.Integer, nullable=False)
-    time_taken = db.Column(db.Float, nullable=False)
-
-    def __repr__(self):
-        return f"Score('{self.username}', '{self.score}')"
-"""
 class ScoreMoves(db.Model):
     score_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
@@ -82,7 +72,7 @@ class Levels(db.Model):
 # Registration form, (there might be a better way to do this)
 class RegistrationForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=40)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -97,7 +87,7 @@ class RegistrationForm(FlaskForm):
 # Login form
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=40)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Login')
 
 @app.route('/')

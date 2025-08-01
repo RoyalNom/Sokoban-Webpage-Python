@@ -38,6 +38,10 @@ for testing purposes you may use the following credentials (though you could of 
 username: 'agha'
 password: 'haha'
 
+for admin testing purposes you may use the following
+username: 'adminagha'
+password: 'thecakemightbelyingngl'
+
 > Info on how to run/ do tests
 Once you are logged into a new account, try to beat a level
 If you have completed a level check the leaderboard page to see your new score
