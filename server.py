@@ -16,7 +16,7 @@ bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
-app.config['SECRET_KEY'] = 'whatsecretkeylol' # Secret key for session management, if you want to deploy this as an actual server than this method must be reworked
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'whatsecretkeylol') # Secret key for session management, if you want to deploy this as an actual server than this method must be reworked
 
 db = SQLAlchemy(app) # Initialize Database
 
