@@ -1,4 +1,4 @@
-The Sokoban Flask Webapplication by Anthony
+The Sokoban Flask Webapplication
 This Application allows user to login to an account, view leaderboards of different levels,
 gives them the ability to play levels, has to capabilty to transform images into grid configurations 
 and allows those with admin privileges to make edits to the database.
